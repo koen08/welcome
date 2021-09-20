@@ -5,17 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController {
+    @GetMapping("/hello/valid")
+    @ResponseBody
+    public ResponseEntity<WelcomeDto> getWelcomeMessageValid(@Valid @RequestBody WelcomeDto welcomeDto) {
+        return new ResponseEntity<>(new WelcomeDto(welcomeDto.getUser(), welcomeDto.getWelcomeMessage()), HttpStatus.OK);
+    }
+
     @GetMapping("/hello/page")
     public String getWelcomeMessage(@RequestParam(required = false) String user, String welcomeMessage, Model model,
                                     HttpServletResponse response) throws IOException {
